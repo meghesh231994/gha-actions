@@ -5,5 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Hello step
-        run: echo "Welcome home"
+        run: |
+        echo "this is one line"
+        echo "this is second line"
         
