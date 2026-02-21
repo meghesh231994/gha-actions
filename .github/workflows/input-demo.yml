@@ -1,16 +1,36 @@
 name: Inputs demo
-on: 
+
+on:
   workflow_dispatch:
     inputs:
-      environment:
-        description: choose the environment to deploy
+      dry-run:
+        type: boolean
+        description: "skip dev only print build output"
+        default: false
+
+      target-environment:
+        type: environment
         required: true
-        default: dev
-  
-  jobs:
-      build:
-        runs-on: ubuntu-latest
-        steps:
-          - name: deploy the app
-            run: echo "deploying the application to ${{inputs.environment}}"
-          
+        description: "which environment the workflow will target"
+
+      tag:
+        type: choice
+        options:
+          - v1.0
+          - v1.1
+          - v1.2
+        description: "which tag to build"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build the app
+        run: echo "building from tag ${{ inputs.tag }}"
+
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.target-environment }}
+    steps:
+      - name: Deploy
+        run: echo "deploying to ${{ inputs.target-environment }}"
