@@ -1,0 +1,17 @@
+name: job output example
+on: push
+jobs:
+    build: 
+        runs-on: ubuntu-latest
+        steps:
+          - name: Generate version
+            id: version
+            run: |
+              version="1.0.0${{github.run_number}}"
+              echo "version=${version}" >> $GITHUB_OUTPUT
+
+          - name: use version
+            run: |
+              echo "building version ${{steps.version.outputs.version}}"
+
+
